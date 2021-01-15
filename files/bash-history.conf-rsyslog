@@ -1,0 +1,8 @@
+# Managed by ansible
+
+{% if logstash_url is defined -%}
+# shipping data to logstash (requires timestamp mapping, see an example in file logstash.example)
+local6.*	@{{ logstash_url }}
+{%- endif %}
+
+local6.*    	/var/log/cmd-history.log

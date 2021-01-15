@@ -1,0 +1,42 @@
+input {
+  udp {
+    port => 10514
+    type => syslog
+    #codec => json
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => [""]
+    index => "rsyslog-%{+YYYY-MM}"
+    user => "RW_user"
+    password => "LONG_AND_COMPLEX_PASSWORD"
+    document_id => "%{fingerprint}"
+  }
+}
+
+
+# Apr  6 21:13:26 node19 user.name: { "run_as": "user.name", "pid": "9402", "command": "ls -al", "return_code": "0"}
+filter {
+  grok {
+      match => { "message" => "%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_hostname} %{DATA:login}(?:\[%{POSINT:pid}\])?: %{GREEDYDATA:_message}" }
+      add_field => [ "received_at", "%{@timestamp}" ]
+      add_field => [ "received_from", "%{host}" ]
+  }
+  
+  json{
+      source => "_message"
+      target => "log"
+  }
+
+  date {
+      match => [ "syslog_timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss" ]
+  }
+
+  fingerprint {
+      method  => "SHA1"
+      source => "message"
+      target => "fingerprint"
+  }
+}

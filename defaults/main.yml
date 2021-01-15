@@ -1,0 +1,21 @@
+---
+# Keep it undefined if you don't use logstash for gathering user's logs from server
+#logstash_url: 
+
+# Required variable
+# should be set in group_vars or in host_vars
+server_users: []
+  # EXAMPLE
+  # ------- 
+  # 5001:
+  #   login: marek.sirovy
+  #   ssh_keys:
+  #   - keys/marek_sirovy
+  #   groups:
+  #   - admins
+  # 5002:
+  #   login: josef.novak
+  #   ssh_keys:
+  #   - keys/josef_novak
+  #   groups:
+  #   - developers

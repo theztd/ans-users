@@ -1,0 +1,12 @@
+# Managed by ansible
+
+Cmnd_Alias  SU=/usr/bin/sudo, /bin/su
+Cmnd_Alias  SHELLS=/bin/sh, /usr/bin/zsh
+Cmnd_Alias  POWER_CMD=/bin/systemctl, /bin/journalctl, /bin/cat, /bin/less, /bin/grep, /bin/zcat, /bin/zgrep, /usr/bin/view
+
+
+# allow to be user app (if your app runs under a single dedicated user)
+%developers   ALL=(app)NOPASSWD: ALL, !SU, !SHELL
+
+# allow to run defined commands as a root without password
+%developers   ALL= NOPASSWD: POWER_CMD

@@ -1,0 +1,31 @@
+---
+- name: Create group developers
+  group:
+    name: developers
+    state: present
+    gid: 50001
+
+- name: Configure sudo for developers
+  copy:
+    src: developers.sudo
+    dest: /etc/sudoers.d/developers
+    mode: 0444
+
+- name: Create group admins
+  group:
+    name: admins
+    state: present
+    gid: 50002
+
+- name: Configure sudo for admins
+  copy:
+    src: admins.sudo
+    dest: /etc/sudoers.d/admins
+    mode: 0444
+
+- include: create_user.yml uid="{{ item }}"
+  with_items: "{{ server_users }}"
+  loop_control:
+    loop_var: uid
+  tags:
+  - accounts

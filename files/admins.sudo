@@ -1,0 +1,4 @@
+# Managed by ansible
+
+# allow to run everything as a root without password
+%admins   ALL= NOPASSWD: ALL

@@ -1,0 +1,23 @@
+---
+- debug:
+    msg: "{{ server_users[uid] }}"
+
+- name: "Create user {{ server_users[uid].name }}"
+  user:
+    uid: "{{ uid }}"
+    name: "{{ server_users[uid].login }}"
+    comment: "Managed by ansible"
+    shell: /bin/bash
+    groups: "{{ server_users[uid].groups }}"
+    append: no
+    create_home: True
+
+- debug:
+    msg: "{{ server_users[uid].ssh_keys }}"
+
+- name: Deploy ssh keys
+  authorized_key:
+    key: "{{ item }}"
+    state: present
+    user: "{{ server_users[uid].login }}"
+  with_file: "{{ server_users[uid].ssh_keys }}"
