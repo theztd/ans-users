@@ -15,7 +15,7 @@ No depnedencies
 Example Playbook
 ----------------
 
-Please tests directory as an example.
+Example is in defaults/main.yml
 
 License
 -------
